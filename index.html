@@ -4,323 +4,353 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>오늘의 말씀 QT</title>
-    
-    <!-- 깔끔하고 가독성 높은 Noto Sans(고딕)와 Noto Serif(명조) 폰트를 불러옵니다. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 폰트 설정: 본문은 명조체, UI는 고딕체 계열을 사용하여 가독성과 경건함을 높입니다. -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            --primary: #4a5c88; /* 첨부 이미지의 네이비/블루 포인트 색상 */
-            --text-main: #222222;
-            --text-sub: #777777;
+            --primary-color: #3b5998; 
+            --text-main: #333333;
+            --text-sub: #666666;
+            --text-light: #999999;
             --bg-color: #ffffff;
+            --bg-header: #ffffff;
             --border-color: #e0e0e0;
-            --bg-gray: #f8f9fa;
+            --highlight-bg: #f8f9fa;
+            --btn-bg: #f0f2f5;
+            --scale: 1; /* 글꼴 크기 배율 */
         }
 
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+        [data-theme="dark"] {
+            --primary-color: #748edb;
+            --text-main: #e0e0e0;
+            --text-sub: #aaaaaa;
+            --text-light: #888888;
+            --bg-color: #121212;
+            --bg-header: #1a1a1a;
+            --border-color: #333333;
+            --highlight-bg: #1e1e1e;
+            --btn-bg: #2a2a2a;
         }
 
         body {
+            font-family: 'Noto Sans KR', sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* 아이콘 대체용 SVG 클래스 */
-        .icon {
-            width: 24px;
-            height: 24px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* 상단 고정 헤더 */
         header {
+            background-color: var(--bg-header);
             position: sticky;
             top: 0;
-            background-color: var(--bg-color);
             z-index: 100;
-            padding-bottom: 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
-        /* 맨 윗줄: 뒤로가기, 오늘, 달력 */
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 16px 4px;
+            padding: 12px 16px;
         }
 
-        .header-top .btn-icon {
-            cursor: pointer;
+        .header-icon {
+            font-size: 22px;
             color: var(--text-main);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s;
         }
+        
+        .header-icon:active { background-color: var(--border-color); }
 
-        .header-top .right-menu {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header-top .txt-today {
-            font-size: 14px;
-            color: var(--text-sub);
-            font-weight: 500;
-        }
-
-        /* 타이틀 영역 */
         .header-title-area {
             text-align: center;
-            padding: 8px 16px 16px;
+            flex-grow: 1;
         }
 
         .header-date {
             font-size: 13px;
             color: var(--text-sub);
-            margin-bottom: 6px;
-        }
-
-        .main-title-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
             margin-bottom: 4px;
         }
 
-        .main-title-wrap h1 {
-            font-size: 22px;
+        .header-main-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .header-main-title h1 {
+            font-size: 20px;
             font-weight: 700;
             margin: 0;
             color: var(--text-main);
         }
 
         .nav-arrow {
+            font-size: 22px;
             color: var(--text-main);
             cursor: pointer;
-            display: flex;
+            text-decoration: none;
+            padding: 0 8px;
         }
 
-        .header-ref {
+        .verse-reference {
             font-size: 14px;
             color: var(--text-sub);
+            margin-top: 4px;
         }
 
-        /* 탭 메뉴 */
+        .controls-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 8px 16px 12px;
+            background-color: var(--bg-header);
+        }
+
+        .control-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--btn-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 500;
+            border-radius: 20px;
+            padding: 6px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:active { background: var(--border-color); }
+        .control-btn[disabled] { opacity: 0.4; cursor: default; }
+        
+        .size-label {
+            font-size: 13px;
+            color: var(--text-sub);
+            min-width: 44px;
+            text-align: center;
+            font-weight: 500;
+        }
+
         .tab-nav {
             display: flex;
             border-bottom: 1px solid var(--border-color);
             border-top: 1px solid var(--border-color);
+            background-color: var(--bg-header);
+            position: sticky;
+            top: 128px;
+            z-index: 99;
         }
 
-        .tab-btn {
+        .tab-button {
             flex: 1;
-            padding: 14px 0;
+            padding: 13px 0;
             text-align: center;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 500;
-            color: var(--text-sub);
+            color: var(--text-light);
             background: none;
             border: none;
             cursor: pointer;
             position: relative;
+            transition: color 0.2s ease;
         }
 
-        .tab-btn.active {
-            color: var(--text-main);
+        .tab-button.active {
+            color: var(--primary-color);
             font-weight: 700;
         }
 
-        .tab-btn.active::after {
+        .tab-button.active::after {
             content: '';
             position: absolute;
             bottom: -1px;
             left: 0;
             width: 100%;
             height: 3px;
-            background-color: var(--primary);
+            background-color: var(--primary-color);
         }
 
-        /* 콘텐츠 컨테이너 */
-        .content-area {
-            padding: 24px 20px 60px;
+        .content-container {
+            padding: 20px 16px 60px;
         }
 
-        .tab-pane {
+        .tab-content {
             display: none;
             animation: fadeIn 0.2s ease-in-out;
         }
 
-        .tab-pane.active {
+        .tab-content.active {
             display: block;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(3px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 성경 본문 스타일 */
-        .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 16px;
+        /* 성경 본문 스타일 (명조체) */
+        .bible-text {
+            font-family: 'Noto Serif KR', serif;
+            font-size: calc(16.5px * var(--scale));
+            line-height: 1.8;
+            color: var(--text-main);
         }
 
         .verse {
             margin-bottom: 12px;
-            font-family: 'Noto Serif KR', serif; /* 성경 본문은 명조체로 가독성 확보 */
-            font-size: 16px;
-            line-height: 1.8;
-            color: var(--text-main);
             display: flex;
             align-items: flex-start;
         }
 
-        .v-num {
+        .verse-num {
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 13px;
+            font-size: calc(12px * var(--scale));
             font-weight: 700;
-            color: var(--primary);
+            color: var(--primary-color);
             margin-right: 8px;
-            padding-top: 3px;
             min-width: 18px;
+            text-align: left;
+            padding-top: calc(5px * var(--scale)); 
         }
         
-        .v-text {
+        .verse-content {
             flex: 1;
         }
 
-        /* 단어 해설 (본문 탭 하단) */
-        .dict-box {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px dashed var(--border-color);
-        }
-
-        .dict-item {
-            font-size: 14px;
-            color: var(--text-main);
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-
-        .dict-term {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        /* 해설 탭 스타일 */
-        .summary-text {
-            font-size: 15px;
-            color: var(--text-sub);
+        /* 단어 해설 및 질문 영역 */
+        .info-box {
+            background-color: var(--highlight-bg);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-size: calc(14.5px * var(--scale));
             line-height: 1.7;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
+            color: var(--text-sub);
+            border: 1px solid var(--border-color);
+        }
+        
+        .info-box.question-box {
+            margin-top: 16px;
         }
 
-        .commentary-block {
-            margin-bottom: 32px;
-        }
-
-        .c-title {
-            font-size: 16px;
+        .info-term {
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
+            color: var(--primary-color);
+            margin-right: 4px;
         }
+        
+        .q-list { margin: 12px 0 0; padding-left: 20px; }
+        .q-list li { margin-bottom: 8px; }
 
-        .c-body {
-            font-size: 15px;
+        .commentary-intro {
+            font-size: calc(15.5px * var(--scale));
             line-height: 1.75;
             color: var(--text-main);
-            margin-bottom: 16px;
-            text-align: justify;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color);
         }
 
-        .reflection {
-            background-color: var(--bg-gray);
-            border-radius: 8px;
-            padding: 14px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--primary);
-        }
-
-        /* 관찰 질문 영역 */
-        .question-box {
-            background-color: #f0f4f8;
-            border-left: 3px solid var(--primary);
-            padding: 16px;
-            margin-bottom: 32px;
-        }
-
-        .q-title {
-            font-size: 14px;
+        .section-header {
+            font-size: calc(18px * var(--scale));
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 12px;
-        }
-
-        .q-item {
-            font-size: 14.5px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
-        .q-item:last-child { margin-bottom: 0; }
-
-        /* 기도 영역 */
-        .prayer-box {
-            margin-top: 40px;
-            padding: 24px;
-            background-color: var(--bg-gray);
-            border-radius: 12px;
-        }
-
-        .prayer-title {
-            font-size: 13px;
-            color: var(--text-sub);
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 0.05em;
-        }
-
-        .prayer-text {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 15px;
-            line-height: 1.8;
-            color: var(--text-main);
+            color: var(--primary-color);
             margin-bottom: 20px;
         }
 
-        .mission-prayer {
-            font-size: 14px;
-            color: var(--text-main);
-            line-height: 1.6;
-            padding-top: 16px;
-            border-top: 1px solid var(--border-color);
+        .commentary-section {
+            margin-bottom: 32px;
         }
 
+        .commentary-title {
+            font-size: calc(16.5px * var(--scale));
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .commentary-title .verse-range {
+            font-size: calc(13.5px * var(--scale));
+            font-weight: 400;
+            color: var(--text-light);
+            margin-left: 6px;
+        }
+
+        .commentary-body {
+            font-size: calc(15px * var(--scale));
+            line-height: 1.8;
+            color: var(--text-main);
+            margin-bottom: 14px;
+            text-align: justify;
+        }
+
+        .reflection-question {
+            background-color: var(--highlight-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            font-size: calc(14.5px * var(--scale));
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-top: 12px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        /* 하단 기도/적용 영역 */
+        .footer-section {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .prayer-title {
+            font-size: calc(14px * var(--scale));
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        
+        .prayer-text {
+            font-family: 'Noto Serif KR', serif;
+            font-size: calc(16px * var(--scale));
+            font-style: italic;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .mission-box {
+            background-color: var(--highlight-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: calc(14px * var(--scale));
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+        
         .mission-target {
             font-weight: 700;
-            color: var(--primary);
+            color: var(--primary-color);
             margin-right: 4px;
         }
     </style>
@@ -329,133 +359,197 @@
 
     <header>
         <div class="header-top">
-            <div class="btn-icon">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-            </div>
-            <div class="right-menu">
-                <span class="txt-today">오늘</span>
-                <div class="btn-icon">
-                    <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div class="header-icon" id="btn-back">←</div>
+            <div class="header-title-area">
+                <div class="header-date">9월 18일 금요일</div>
+                <div class="header-main-title">
+                    <a href="#" class="nav-arrow">‹</a>
+                    <h1>그것을 먹지는 못하리라</h1>
+                    <a href="#" class="nav-arrow">›</a>
                 </div>
+                <div class="verse-reference">열왕기하 6:24-7:2</div>
             </div>
+            <!-- 테마 변환 버튼 -->
+            <div class="header-icon" id="btn-theme" aria-label="테마 변경">🌙</div>
         </div>
 
-        <div class="header-title-area">
-            <div class="header-date">9월 17일 목요일</div>
-            <div class="main-title-wrap">
-                <div class="nav-arrow"><svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
-                <h1>그들의 눈을 어둡게</h1>
-                <div class="nav-arrow"><svg class="icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
-            </div>
-            <div class="header-ref">열왕기하 6:14-23</div>
+        <!-- 텍스트 크기 조절 컨트롤 -->
+        <div class="controls-area">
+            <button class="control-btn" id="szMinus" aria-label="글씨 작게">가 -</button>
+            <span class="size-label" id="szLabel">100%</span>
+            <button class="control-btn" id="szPlus" aria-label="글씨 크게">가 +</button>
         </div>
-
-        <nav class="tab-nav">
-            <button class="tab-btn active" onclick="openTab('tab-text')">본문</button>
-            <button class="tab-btn" onclick="openTab('tab-commentary')">해설</button>
-        </nav>
     </header>
 
-    <main class="content-area">
-        
-        <!-- === 본문 탭 === -->
-        <div id="tab-text" class="tab-pane active">
-            <div class="section-title">눈을 여시고 어둡게 하시는 하나님</div>
-            
-            <div class="verse"><div class="v-num">14</div><div class="v-text">왕이 이에 말과 병거와 많은 군사를 보내매 그들이 밤에 가서 그 성읍을 에워쌌더라</div></div>
-            <div class="verse"><div class="v-num">15</div><div class="v-text">하나님의 사람의 사환이 일찍이 일어나서 나가보니 군사와 말과 병거가 성읍을 에워쌌는지라 그의 사환이 엘리사에게 말하되 아아, 내 주여 우리가 어찌하리이까 하니</div></div>
-            <div class="verse"><div class="v-num">16</div><div class="v-text">대답하되 두려워하지 말라 우리와 함께 한 자가 그들과 함께 한 자보다 많으니라 하고</div></div>
-            <div class="verse"><div class="v-num">17</div><div class="v-text">기도하여 이르되 여호와여 원하건대 그의 눈을 열어서 보게 하옵소서 하니 여호와께서 그 청년의 눈을 여시매 그가 보니 불말과 불병거가 산에 가득하여 엘리사를 둘렀더라</div></div>
-            <div class="verse"><div class="v-num">18</div><div class="v-text">아람 사람이 엘리사에게 내려오매 엘리사가 여호와께 기도하여 이르되 원하건대 저 무리의 눈을 어둡게 하옵소서 하매 엘리사의 말대로 그들의 눈을 어둡게 하신지라</div></div>
-            <div class="verse"><div class="v-num">19</div><div class="v-text">엘리사가 그들에게 이르되 이는 그 길이 아니요 이는 그 성읍도 아니니 나를 따라 오라 내가 너희를 인도하여 너희가 찾는 사람에게로 나아가리라 하고 그들을 인도하여 사마리아에 이르니라</div></div>
-            <div class="verse"><div class="v-num">20</div><div class="v-text">사마리아에 들어갈 때에 엘리사가 이르되 여호와여 이 무리의 눈을 열어서 보게 하옵소서 하니 여호와께서 그들의 눈을 여시매 그들이 보니 자기들이 사마리아 가운데에 있더라</div></div>
-            <div class="verse"><div class="v-num">21</div><div class="v-text">이스라엘 왕이 그들을 보고 엘리사에게 이르되 내 아버지여 내가 치리이까 내가 치리이까 하니</div></div>
-            <div class="verse"><div class="v-num">22</div><div class="v-text">대답하되 치지 마소서 칼과 활로 사로잡은 자인들 어찌 치리이까 떡과 물을 그들 앞에 두어 먹고 마시게 하고 그들의 주인에게로 돌려보내소서 하는지라</div></div>
-            <div class="verse"><div class="v-num">23</div><div class="v-text">왕이 위하여 음식을 많이 베풀고 그들이 먹고 마시매 놓아보내니 그들이 그들의 주인에게로 돌아가니라 이로부터 아람 군사의 부대가 다시는 이스라엘 땅에 들어오지 못하니라</div></div>
+    <nav class="tab-nav">
+        <button class="tab-button active" onclick="switchTab('bible')">본문</button>
+        <button class="tab-button" onclick="switchTab('commentary')">해설</button>
+    </nav>
 
-            <div class="dict-box">
-                <div class="dict-item">
-                    <span class="dict-term">눈을 열어서 (17절)</span> 물리적인 시력을 넘어, 육신의 눈으로는 볼 수 없는 하나님의 임재를 보게 하는 영적인 통찰력을 의미한다.
-                </div>
+    <div class="content-container">
+        <div id="tab-bible" class="tab-content active">
+            <div class="bible-text">
+                <div class="verse"><div class="verse-num">24</div><div class="verse-content">이 후에 아람 왕 벤하닷이 그의 온 군대를 모아 올라와서 사마리아를 에워싸니</div></div>
+                <div class="verse"><div class="verse-num">25</div><div class="verse-content">아람 사람이 사마리아를 에워싸므로 성중이 크게 주려서 나귀 머리 하나에 은 팔십 세겔이요 비둘기 똥 사분의 일 갑에 은 다섯 세겔이라 하니</div></div>
+                <div class="verse"><div class="verse-num">26</div><div class="verse-content">이스라엘 왕이 성 위로 지나갈 때에 한 여인이 외쳐 이르되 나의 주 왕이여 도우소서</div></div>
+                <div class="verse"><div class="verse-num">27</div><div class="verse-content">왕이 이르되 여호와께서 너를 돕지 아니하시면 내가 무엇으로 너를 도우랴 타작마당으로 말미암아 하겠느냐 포도주 틀로 말미암아 하겠느냐 하니라</div></div>
+                <div class="verse"><div class="verse-num">28</div><div class="verse-content">또 이르되 무슨 일이냐 하니 여인이 대답하되 이 여인이 내게 이르기를 네 아들을 내놓아라 우리가 오늘 먹고 내일은 내 아들을 먹자 하매</div></div>
+                <div class="verse"><div class="verse-num">29</div><div class="verse-content">우리가 드디어 내 아들을 삶아 먹었더니 이튿날에 내가 그 여인에게 이르되 네 아들을 내놓아라 우리가 먹으리라 하나 그가 그의 아들을 숨겼나이다 하는지라</div></div>
+                <div class="verse"><div class="verse-num">30</div><div class="verse-content">왕이 그 여인의 말을 듣고 자기 옷을 찢으니라 그가 성 위로 지나갈 때에 백성이 본즉 그의 속살에 굵은 베를 입었더라</div></div>
+                <div class="verse"><div class="verse-num">31</div><div class="verse-content">왕이 이르되 사밧의 아들 엘리사의 머리가 오늘 그 몸에 붙어 있으면 하나님이 내게 벌 위에 벌을 내리실지로다 하니라</div></div>
+                <div class="verse"><div class="verse-num">32</div><div class="verse-content">그 때에 엘리사가 그의 집에 앉아 있고 장로들이 그와 함께 앉아 있는데 왕이 자기 처소에서 사람을 보냈더니 그 사자가 이르기 전에 엘리사가 장로들에게 이르되 너희는 이 살인한 자의 아들이 내 머리를 베려고 사람을 보내는 것을 보느냐 너희는 보다가 사자가 오거든 문을 닫고 문 안에 들이지 말라 그의 주인의 발소리가 그의 뒤에서 나지 아니하느냐 하고</div></div>
+                <div class="verse"><div class="verse-num">33</div><div class="verse-content">무리와 말을 할 때에 그 사자가 그에게 이르니라 왕이 이르되 이 재앙이 여호와께로부터 나왔으니 어찌 더 여호와를 기다리리요</div></div>
+                <div class="verse"><div class="verse-num">7:1</div><div class="verse-content">엘리사가 이르되 여호와의 말씀을 들을지어다 여호와께서 이르시되 내일 이맘때에 사마리아 성문에서 고운 밀가루 한 스아를 한 세겔로 매매하고 보리 두 스아를 한 세겔로 매매하리라 하셨느니라</div></div>
+                <div class="verse"><div class="verse-num">2</div><div class="verse-content">그 때에 왕이 그의 손에 의지하는 자 곧 한 장관이 하나님의 사람에게 대답하여 이르되 여호와께서 하늘에 창을 내신들 어찌 이런 일이 있으리요 하더라 엘리사가 이르되 네가 네 눈으로 보리라 그러나 그것을 먹지는 못하리라 하니라</div></div>
+            </div>
+
+            <!-- 단어 해설 -->
+            <div class="info-box">
+                <span class="info-term">나귀 머리와 비둘기 똥(25절)</span> 율법에서 부정한 짐승으로 취급되어 먹지 않던 나귀의 가장 먹을 것 없는 부위(머리)와 땔감이나 소금 대용으로 쓰이던 비둘기 배설물조차 폭등한 가격에 거래될 만큼 극심한 기근의 참상을 보여 준다.
+            </div>
+
+            <!-- 관찰 질문 -->
+            <div class="info-box question-box">
+                <div style="font-weight: 700; color: var(--primary-color); margin-bottom: 8px;">관찰 질문</div>
+                <ol class="q-list">
+                    <li>사마리아 성의 기근이 얼마나 끔찍했는지를 단적으로 보여 주는 충격적인 에피소드는 무엇입니까? (28-29절)</li>
+                    <li>"내일 이맘때에 사마리아 성문에 풍요가 임할 것"이라는 엘리사의 예언에, 이스라엘 왕의 장관은 어떻게 반응했습니까? (7:1-2절)</li>
+                </ol>
             </div>
         </div>
 
-        <!-- === 해설 탭 === -->
-        <div id="tab-commentary" class="tab-pane">
+        <div id="tab-commentary" class="tab-content">
             
-            <div class="summary-text">
-                엘리사는 눈 앞의 아람 군대로 두려움에 떠는 사환의 눈을 열어 영적 실상을 바로 알게 하는 한편, 아람 군대에게 칼 대신 떡으로, 무력이 아닌 하나님의 방법으로 승리를 거둡니다.
+            <div class="commentary-intro">
+                전쟁은 인간의 추악한 단면을 고스란히 드러냅니다. 참혹한 현실에도 하나님은 구원의 '내일'을 선포하십니다.
             </div>
 
-            <div class="question-box">
-                <div class="q-title">관찰 질문</div>
-                <div class="q-item">1. 아람 군대를 보고 절망했던 엘리사의 사환이 엘리사의 기도 후에 본 것은 무엇입니까? (17절)</div>
-                <div class="q-item">2. 엘리사는 사마리아로 끌려온 아람 군대를 어떻게 하면 좋겠다고 말했습니까? 그리고 그 결과는 어떠합니까? (22-23절)</div>
-            </div>
+            <div class="section-header">하나님은 어떤 분입니까? / 내게 주시는 교훈은 무엇입니까?</div>
 
-            <div class="commentary-block">
-                <div class="c-title">열어서 보게 하옵소서 (14-17절)</div>
-                <div class="c-body">
-                    아람 왕이 엘리사를 잡기 위해 밤새 도단을 큰 군대로 에워쌌습니다. 아침 일찍 일어난 엘리사의 사환은 이 절망적인 현실 앞에서 두려움에 떱니다. 반면 엘리사는 놀랍도록 평온합니다. 엘리사가 사환을 위해 기도하자 사환의 눈이 열려 여호와의 불말과 불병거가 산에 가득한 장면을 봅니다. 위기 앞에서 육신의 눈으로는 절망할 수밖에 없지만, 믿음의 눈을 뜨면 크고 강한 하나님을 보게 됩니다.
+            <div class="commentary-section">
+                <div class="commentary-title">자기 옷을 찢으니라 <span class="verse-range">(24-30절)</span></div>
+                <div class="commentary-body">
+                    아람 왕 벤하닷의 거대한 군대가 사마리아 성을 에워싸자, 성 안에는 끔찍한 기근이 닥칩니다. 부정한 나귀 머리와 비둘기 똥조차 부르는 게 값이 될 정도입니다. 급기야 왕에게 억울함을 호소하는 한 여인의 입에서 충격적인 고발이 나옵니다. 굶주림을 견디지 못해 어제는 자기 아들을 삶아 먹었고, 오늘은 이웃 여인의 아들을 먹으려 했는데 그 여인이 아이를 숨겼다는 것입니다. 모성애마저 생존의 위협 앞에서 무참히 붕괴되었습니다. 이 참상을 들은 이스라엘 왕(여호람)은 자기 옷을 찢습니다. 그는 회개를 상징하는 굵은 베를 입었지만, 그의 마음은 여전히 찢어지지 않았습니다.
                 </div>
-                <div class="reflection">당면한 여러 문제 앞에서 나는 어떻게 반응하나요?</div>
+                <div class="reflection-question">삶의 극한 상황에 내몰릴 때, 내 안의 이기심과 죄악을 보며 애통하나요, 아니면 세상과 타인을 향해 원망의 화살을 돌리나요?</div>
             </div>
 
-            <div class="commentary-block">
-                <div class="c-title">무리의 눈을 어둡게 하옵소서 (18-20절)</div>
-                <div class="c-body">
-                    아람 군대가 엘리사를 잡으러 올 때, 엘리사는 하나님께 기도하여 그들의 눈을 어둡게 합니다. 아람 군대는 순식간에 방향 감각을 잃어 무기력해졌고, 엘리사는 그들을 이스라엘의 수도인 사마리아 한가운데로 데려갑니다. 하나님이 그들의 눈을 다시 여실 때에야 자신들이 적진 한가운데 포위되었음을 깨닫습니다. 무력을 앞세우던 아람 군대는 철저히 눈먼 자들이었음이 드러났습니다. 하나님의 말씀에 순종하는 한 사람의 기도가 창칼로 무장한 대군을 무력화시켰습니다.
+            <div class="commentary-section">
+                <div class="commentary-title">이 살인한 자의 아들이 <span class="verse-range">(31-33절)</span></div>
+                <div class="commentary-body">
+                    참혹한 현실 앞에서 왕은 회개하기는커녕, 이 모든 책임을 엘리사에게 돌립니다. 왕은 엘리사를 죽이려 자객을 보낸 후 선언합니다. “이 재앙이 여호와께로부터 나왔으니 어찌 더 여호와를 기다리리요." 이것이 하나님을 떠난 인간의 전형입니다. 재앙의 원인이 이스라엘의 죄 때문임에도, 하나님 탓을 하며 인내와 기도를 포기해버린 것입니다.
                 </div>
-                <div class="reflection">정작 하나님의 일하심을 못 보는 아람 군대의 모습, 내게는 없나요?</div>
+                <div class="reflection-question">"더 이상 기도해도 소용없어"라며 하나님을 향한 인내를 포기한 적은 없나요?</div>
             </div>
 
-            <div class="commentary-block">
-                <div class="c-title">먹고 마시게 하고 (21-23절)</div>
-                <div class="c-body">
-                    사마리아에 갇힌 아람 군대를 본 이스라엘 왕은 흥분하여 엘리사에게 “내 아버지여 내가 치리이까” 하고 묻습니다. 적을 궤멸할 절호의 기회로 여긴 것입니다. 그러나 엘리사는 풍성히 먹이고 돌려보내자며, 이른바 ‘환대의 식탁’을 베풉니다. 이 압도적인 은혜에 아람 군대는 전의를 잃었고, 이후로 아람 군대가 이스라엘에 들어오지 못합니다(23절). 선으로 악을 이기고, 원수까지도 사랑으로 품어낼 때 참된 평화가 찾아옵니다. 십자가에서 원수 된 우리를 위해 자신을 내어주신 예수님의 환대가 바로 참된 평화의 절정입니다.
+            <div class="commentary-section">
+                <div class="commentary-title">장관의 불신과 은혜의 선언 <span class="verse-range">(7:1-2절)</span></div>
+                <div class="commentary-body">
+                    엘리사에게 하나님의 말씀이 임합니다. "내일 이맘때에 사마리아 성문에서 고운 가루 한 스아를 한 세겔로 매매하고 보리 두 스아를 한 세겔로 매매하리라.” 경제가 풍요의 상태로 회복될 것이라는 선포입니다. 그러나 가장 권력 있는 장관은 이 말씀을 비웃습니다. 이성적으로는 하나님의 은혜를 납득할 수 없습니다. 이에 엘리사는 기적을 보게 될 것이나 맛보지는 못할 것이라고 심판을 선언합니다. 구원은 이성적 판단이 아니라 믿음으로 받아누리는 것입니다.
                 </div>
-                <div class="reflection">복수할 기회에, 예수님의 마음으로 ‘환대의 식탁’을 베풀 수 있나요?</div>
+                <div class="reflection-question">불가능한 상황 속에서도, “내일 이맘때에" 역사하실 하나님의 말씀을 신뢰하나요?</div>
             </div>
 
-            <div class="prayer-box">
+            <!-- 기도 및 선교 영역 -->
+            <div class="footer-section">
                 <div class="prayer-title">오늘의 기도</div>
                 <div class="prayer-text">
-                    "두려움을 이기는 믿음을 갖고, 선으로 악을 이기는 삶을 살게 하소서."
+                    "절망 속에서도 주의 약속을 믿고 기다리는 자가 되게 하소서."
                 </div>
-                <div class="mission-prayer">
-                    <span class="mission-target">[정산, 최비(M국)]</span> 화인교회 개척이 구체적으로 진행되게 하소서.
+                <div class="mission-box">
+                    <span class="mission-target">[강하전(국내이주민)]</span> 사역을 함께 감당할 동역자들을 붙여 주소서.
                 </div>
             </div>
 
-        </div>
-
-    </main>
+        </div> 
+    </div>
 
     <script>
-        function openTab(tabId) {
-            // 모든 탭 버튼 비활성화
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            tabBtns.forEach(btn => btn.classList.remove('active'));
-            
-            // 모든 탭 콘텐츠 숨김
-            const tabPanes = document.querySelectorAll('.tab-pane');
-            tabPanes.forEach(pane => pane.classList.remove('active'));
+        // --- 1. 탭 전환 로직 ---
+        function switchTab(tabName) {
+            const buttons = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
 
-            // 선택된 탭 활성화 로직
-            if (tabId === 'tab-text') {
-                tabBtns[0].classList.add('active');
-            } else {
-                tabBtns[1].classList.add('active');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            if (tabName === 'bible') {
+                buttons[0].classList.add('active');
+                document.getElementById('tab-bible').classList.add('active');
+            } else if (tabName === 'commentary') {
+                buttons[1].classList.add('active');
+                document.getElementById('tab-commentary').classList.add('active');
             }
             
-            document.getElementById(tabId).classList.add('active');
-
-            // 탭 변경 시 화면 상단(헤더 아래)으로 스크롤 이동
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // --- 2. 다크모드/라이트모드 토글 로직 ---
+        const themeBtn = document.getElementById('btn-theme');
+        const rootEl = document.documentElement;
+
+        // 로컬 스토리지에서 테마 불러오기
+        const savedTheme = localStorage.getItem('qt-app-theme');
+        if (savedTheme === 'dark') {
+            rootEl.setAttribute('data-theme', 'dark');
+            themeBtn.textContent = '☀️';
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = rootEl.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                rootEl.removeAttribute('data-theme');
+                localStorage.setItem('qt-app-theme', 'light');
+                themeBtn.textContent = '🌙';
+            } else {
+                rootEl.setAttribute('data-theme', 'dark');
+                localStorage.setItem('qt-app-theme', 'dark');
+                themeBtn.textContent = '☀️';
+            }
+        });
+
+        // --- 3. 텍스트 크기 조절 로직 ---
+        const SCALE_MIN = 0.85;
+        const SCALE_MAX = 1.6;
+        const SCALE_STEP = 0.15;
+        let textScale = 1;
+
+        // 로컬 스토리지에서 글자 배율 불러오기
+        try {
+            const savedScale = localStorage.getItem('qt-app-scale');
+            if (savedScale) {
+                const parsedVal = parseFloat(savedScale);
+                if (!isNaN(parsedVal)) textScale = parsedVal;
+            }
+        } catch(e) {}
+
+        const szLabel = document.getElementById('szLabel');
+        const szMinus = document.getElementById('szMinus');
+        const szPlus = document.getElementById('szPlus');
+
+        function applyScale() {
+            const safeScale = parseFloat(textScale.toFixed(2));
+            rootEl.style.setProperty('--scale', safeScale);
+            szLabel.textContent = Math.round(safeScale * 100) + '%';
+            
+            szMinus.disabled = safeScale <= SCALE_MIN + 0.001;
+            szPlus.disabled = safeScale >= SCALE_MAX - 0.001;
+            
+            try { localStorage.setItem('qt-app-scale', safeScale); } catch(e) {}
+        }
+
+        szMinus.addEventListener('click', () => {
+            textScale = Math.max(SCALE_MIN, textScale - SCALE_STEP);
+            applyScale();
+        });
+
+        szPlus.addEventListener('click', () => {
+            textScale = Math.min(SCALE_MAX, textScale + SCALE_STEP);
+            applyScale();
+        });
+
+        // 초기 배율 적용
+        applyScale();
     </script>
 </body>
 </html>
